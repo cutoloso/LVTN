@@ -1,7 +1,9 @@
 @extends('layouts.master')
 @section('header.title','Trang chủ')
 @section('header.css')
+    <style>
 
+    </style>
 @endsection
 
 @section('body.content')
@@ -50,7 +52,7 @@
                                         </a>
                                     </div>
                                     <div class="group-button-mobile">
-                                        <a href="javascript:" data-id="{{$item_sale->id}}" class="add-cart">Thêm vào giỏ</a>
+                                        <a href="javascript:" data-id="{{$item_sale->id}}" class="add-cart"><i class="fas fa-cart-plus"></i></a>
                                         <a href="javascript:" data-id="{{$item_sale->id}}" class="btn-compare">
                                             <i class="fas fa-exchange-alt"></i>
                                         </a>
@@ -61,7 +63,7 @@
                                 </div>
                                 <div class="product-info">
                                     <div class="star-rating">
-                                        <span class="star" style="width: 80%"></span>
+                                        <span class="star" style="width: {{($item_sale->avgStar/5)*100}}%"></span>({{$item_sale->totalReview}})
                                     </div>
                                     <a href="">
                                         <div class="product-name">
@@ -71,9 +73,9 @@
 
                                     <div class="product-price">
                                         @if($item_sale->price_sale =='')
-                                            {{$item_sale->price}}₫
+                                            @php echo number_format($item_sale->price).'₫'; @endphp
                                         @else
-                                            {{$item_sale->price_sale}}₫
+                                            @php echo number_format($item_sale->price_sale).'₫'; @endphp
                                         @endif
                                     </div>
                                     <div class="group-button">
@@ -127,7 +129,7 @@
                                         </a>
                                     </div>
                                     <div class="group-button-mobile">
-                                        <a href="javascript:" class="add-cart">Thêm vào giỏ</a>
+                                        <a href="javascript:" data-id="{{$item_feature->id}}" class="add-cart"><i class="fas fa-cart-plus"></i></a>
                                         <a href="javascript:" data-id="{{$item_feature->id}}" class="btn-compare">
                                             <i class="fas fa-exchange-alt"></i>
                                         </a>
@@ -138,21 +140,17 @@
                                 </div>
                                 <div class="product-info">
                                     <div class="star-rating">
-                                        <span class="star" style="width: 80%"></span>
+                                        <span class="star" style="width: {{($item_sale->avgStar/5)*100}}%"></span> ({{$item_sale->totalReview}})
                                     </div>
                                     <div class="product-name">
                                         <a href="">{{$item_feature->name}}</a>
                                     </div>
                                     <div class="product-price">
-                                        @if($item_feature->price_sale =='')
-                                            {{$item_feature->price}}₫
-                                        @else
-                                            {{$item_feature->price_sale}}₫
-                                        @endif
+                                        @php echo number_format($item_feature->price_sale).'₫'; @endphp
                                     </div>
                                     <div class="group-button">
                                         <div class="inner">
-                                            <a href="javascript:" class="add-cart">Thêm vào giỏ</a>
+                                            <a href="javascript:" data-id="{{$item_feature->id}}" class="add-cart">Thêm vào giỏ</a>
                                             <a href="javascript:" data-id="{{$item_feature->id}}" class="btn-compare">
                                                 <i class="fas fa-exchange-alt"></i>
                                             </a>
@@ -175,36 +173,6 @@
 @section('js')
     <script>
         $(document).ready(function () {
-            $('.add-cart').click(function () {
-                let htmlString = $( this ).html();
-                $(this).html('<div class="ajax-loading"></div>');
-
-                let id = $(this).data('id');
-                $.ajax({
-                    method: "GET",
-                    url: 'add-to-cart/'+id,
-                    data:{
-                        _token : "{{ csrf_token() }}"
-                    },
-                    beforeSend: function () {
-                        $('#header .header2 .header2-content .header2-control .icon .count').removeClass('heartBeat');
-                    },
-                    success: function (response) {
-                        setTimeout(function(){
-                            $('#header .header2 .header2-content .header2-control .icon .count').text(response.cartCount);
-                            $('.add-cart').html(htmlString);
-                            $('body,html').animate({
-                                    scrollTop: 0,
-                                }, 500
-                            );
-                            $('#header .header2 .header2-content .header2-control .icon .count').addClass('heartBeat');
-                        }, 500);
-                    }
-                });
-
-            });
-
-
 
         });
 

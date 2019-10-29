@@ -17,11 +17,11 @@
                             <span>›</span>
                         </li>
                         <li>
-                            <a href="#">Điện thoại</a>
+                            <a href="/category">Điện thoại</a>
                             <span>›</span>
                         </li>
                         <li class="active">
-                            <a href="#">{{$bra_name}}</a>
+                            <span>{{$bra_name}}</span>
                         </li>
                     </ul>
                 </div>
@@ -35,9 +35,9 @@
                             </div>
 
                             <div class="star-rating">
-                                <span class="star" style="width: 80%"></span>
+                                <span class="star" style="width: {{$avgStar*20}}%"></span>
                             </div>
-                            <a href="#">424 đánh giá</a>
+                            <span>{{$totalReview}} đánh giá</span>
                         </div>
                         <div class="fb-plugin">
                             <div class="fb-like"
@@ -112,11 +112,11 @@
                     <div class="summary-content">
                         <div class="price-wrapper">
                             <span class="price">
-                                <?php echo priceToString($product->price_sale)?>₫
+                                <?php echo number_format($product->price_sale)?>₫
                             </span>
                             @if($product->price_sale != '' && $product->price_sale != $product->price)
                                 <del class="price-sale">
-                                    <?php echo priceToString($product->price)?>₫
+                                    <?php echo number_format($product->price)?>₫
                                 </del>
                             @endif
                         </div>
@@ -147,7 +147,7 @@
                         </div>
                         <div class="btn-wrapper">
                             <a href="{{route('buy-now',$product->id)}}" class="buy-now btn">Mua ngay <br> <span>Giao hàng toàn quốc</span></a>
-                            <a href="javascript:"  data-id="{{$product->id}}" class="add-cart btn">Thêm vào giỏ <br> <span>Ship COD</span></a>
+                            <a href="javascript:"  data-id="{{$product->id}}" class="add-cart-single btn">Thêm vào giỏ <br> <span>Ship COD</span></a>
                         </div>
                         <div class="callorder">
                             Gọi đặt mua: <a href="tel:1800xxxx">1800.xxxx</a> (miễn phí - 7:30-22:00)
@@ -213,51 +213,51 @@
                                     <div class="total-point">{{$avgStar}}/5</div>
                                     <div class="item-rating">
                                         <div class="star-rating">
-                                            <span class="star" style="width: 80%"></span>
+                                            <span class="star" style="width: {{$avgStar*20}}%"></span>
                                         </div>
-                                        <p class="comments-count"><a href="">({{count($reviews)}} nhận xét)</a></p>
+                                        <p class="comments-count">({{$totalReview}} nhận xét)</p>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-4 rv-col-mid">
                                     <div class="item rate-5">
                                         <span class="rating-num">5</span>
                                         <div class="progress">
-                                            <div class="progress-bar bg-success" style="width: {!! (countReviewStar(5)/$totalStar)*100 !!}%;">
+                                            <div class="progress-bar bg-success" style="width: {!! percentReview((countReviewStar(5,(int)$product->id)),$totalReview) !!}%;">
                                             </div>
                                         </div>
-                                        <span class="rating-num-total">{{ (countReviewStar(5)/$totalStar)*100 }}%</span>
+                                        <span class="rating-num-total">{{ percentReview((countReviewStar(5,(int)$product->id)),$totalReview)}}%</span>
                                     </div>
                                     <div class="item rate-4">
                                         <span class="rating-num">4</span>
                                         <div class="progress">
-                                            <div class="progress-bar bg-success" style="width: {!! (countReviewStar(4)/$totalStar)*100 !!}%;">
+                                            <div class="progress-bar bg-success" style="width: {!! percentReview((countReviewStar(4,(int)$product->id)),$totalReview) !!}%;">
                                             </div>
                                         </div>
-                                        <span class="rating-num-total">{{ (countReviewStar(4)/$totalStar)*100 }}%</span>
+                                        <span class="rating-num-total">{{ percentReview((countReviewStar(4,(int)$product->id)),$totalReview) }}%</span>
                                     </div>
                                     <div class="item rate-3">
                                         <span class="rating-num">3</span>
                                         <div class="progress">
-                                            <div class="progress-bar bg-success" style="width: {!! (countReviewStar(3)/$totalStar)*100 !!}%;">
+                                            <div class="progress-bar bg-success" style="width: {!! percentReview((countReviewStar(3,(int)$product->id)),$totalReview) !!}%;">
                                             </div>
                                         </div>
-                                        <span class="rating-num-total">{{ (countReviewStar(3)/$totalStar)*100 }}%</span>
+                                        <span class="rating-num-total">{{ percentReview((countReviewStar(3,(int)$product->id)),$totalReview)}}%</span>
                                     </div>
                                     <div class="item rate-2">
                                         <span class="rating-num">2</span>
                                         <div class="progress">
-                                            <div class="progress-bar bg-success" style="width: {!! (countReviewStar(2)/$totalStar)*100 !!}%;">
+                                            <div class="progress-bar bg-success" style="width: {!! percentReview((countReviewStar(2,(int)$product->id)),$totalReview) !!}%;">
                                             </div>
                                         </div>
-                                        <span class="rating-num-total">{{ (countReviewStar(2)/$totalStar)*100 }}%</span>
+                                        <span class="rating-num-total">{{ percentReview((countReviewStar(2,(int)$product->id)),$totalReview)}}%</span>
                                     </div>
                                     <div class="item rate-1">
                                         <span class="rating-num">1</span>
                                         <div class="progress">
-                                            <div class="progress-bar bg-success" style="width: {!! (countReviewStar(1)/$totalStar)*100 !!}%;">
+                                            <div class="progress-bar bg-success" style="width: {!! percentReview((countReviewStar(1,(int)$product->id)),$totalReview) !!}%;">
                                             </div>
                                         </div>
-                                        <span class="rating-num-total">{{ (countReviewStar(1)/$totalStar)*100 }}%</span>
+                                        <span class="rating-num-total">{{ percentReview((countReviewStar(1,(int)$product->id)),$totalReview)}}%</span>
                                     </div>
 
                                 </div>
@@ -416,6 +416,7 @@
                                         </div>
                                     @endforeach
                                 </div>
+                                <div class="col-12 pagination-wrapper d-flex justify-content-center">{{ $reviews->links() }}</div>
                             </div>
                         </div>
                     </div>
@@ -460,18 +461,18 @@
                                         </div>
                                         <div class="product-info">
                                             <div class="star-rating">
-                                                <span class="star" style="width: 80%"></span>
+                                                <span class="star" style="width: {{getAvgStar($product->id)*20}}%"></span>({{getTotalReview($product->id)}})
                                             </div>
                                             <div class="product-name">
                                                 <a href="">{{$relatedProduct->name}}</a>
                                             </div>
                                             <div class="product-price">
-                                                <?php echo priceToString($relatedProduct->price)?>
+                                                <?php echo number_format($relatedProduct->price)?>
                                             </div>
                                             <div class="group-button">
                                                 <div class="inner">
                                                     <a href="javascript:" data-id="{{$relatedProduct->id}}" class="add-cart">Thêm vào giỏ</a>
-                                                    <a href="#" class="compare">
+                                                    <a href="javascript:" data-id="{{$relatedProduct->id}}" class="btn-compare">
                                                         <i class="fas fa-exchange-alt"></i>
                                                     </a>
                                                     <a href="#" class="add_wishlist">
@@ -521,37 +522,44 @@
 {{--    <script src="{{asset('app/ReviewController.js')}}"></script>--}}
     <script>
         $(document).ready(function () {
-
-            $('.add-cart').click(function () {
+            $('.add-cart-single').click(function () {
                 let htmlString = $( this ).html();
-                $(this).html('<div class="ajax-loading"></div>');
+                let current = $(this);
+                current.html('<div class="ajax-loading"></div>');
+
                 let id = $(this).data('id');
                 $.ajax({
-                    method: "GET",
+                    method: "POST",
                     url: '/add-to-cart/'+id,
                     data:{
                         _token : "{{ csrf_token() }}"
                     },
                     beforeSend: function () {
-
+                        $('#header .header2 .header2-content .header2-control .icon .count').removeClass('heartBeat');
                     },
                     success: function (response) {
                         setTimeout(function(){
                             $('#header .header2 .header2-content .header2-control .icon .count').text(response.cartCount);
-                            $('.add-cart').html(htmlString);
+                            $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').text(response.cartCount);
+
+                            if ($(window).width() > 575){
+                                current.html(htmlString);
+                            }else{
+                                current.html('<i class="fas fa-cart-plus"></i>');
+                            }
                             $('body,html').animate({
                                     scrollTop: 0,
                                 }, 500
                             );
                             $('#header .header2 .header2-content .header2-control .icon .count').addClass('heartBeat');
-                        }, 1000);
+                            $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').addClass('heartBeat');
+                        }, 500);
                     }
                 });
 
             });
             //update reviews
             function updateReview(dataReviews) {
-                $('.comments-count').text('('+dataReviews.length+'nhận xét)');
                 let html = '';
                 dataReviews.forEach(function (review) {
                     html +=
@@ -698,13 +706,16 @@
 
             $('#sort-list-star li').click(function () {
                 let star = $(this).data('star');
+                let pro_id = {{$product->id}};
                 console.log(star);
                 $.ajax({
-                    url: '{{route("review.index")}}' +'-filter/'+ star,
+                    url: '{{route("review.index")}}' +'-filter',
                     method: 'GET',
                     dataType: "json",
                     data: {
                         _token: "{{csrf_token()}}",
+                        star: star,
+                        pro_id: pro_id
                     },
                     beforeSend: function(data){
                         // console.log(data);
@@ -717,6 +728,25 @@
                 });
             });
 
+            {{--$('.pagination a').unbind('click').on('click', function(e) {--}}
+            {{--    e.preventDefault();--}}
+            {{--    var page = $(this).attr('href').split('page=')[1];--}}
+            {{--    getPosts(page);--}}
+            {{--});--}}
+            {{--var origin = window.location.origin;--}}
+            {{--function getPosts(page)--}}
+            {{--{--}}
+            {{--    let pro_id = {{$product->id}};--}}
+            {{--    $.ajax({--}}
+            {{--        type: "GET",--}}
+            {{--        url: origin+'/api/review/'+pro_id+'?page='+ page,--}}
+            {{--        success: function (response) {--}}
+            {{--            let html = updateReview(response.reviews.data);--}}
+            {{--            $('.review-list').html(html);--}}
+            {{--            afterUpdateReviews();--}}
+            {{--        }--}}
+            {{--    })--}}
+            {{--}--}}
 
         });
     </script>

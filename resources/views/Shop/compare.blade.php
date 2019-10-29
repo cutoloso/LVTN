@@ -29,7 +29,7 @@
                             {!! $product1->name !!}
                         </div>
                         <div class="product-price">
-                            <?php echo priceToString($product1->price_sale)?>₫
+                            <?php echo number_format($product1->price_sale)?>₫
                         </div>
                     </a>
                     <div class="rating">
@@ -52,7 +52,7 @@
                             {!! $product2->name !!}
                         </div>
                         <div class="product-price">
-                            <?php echo priceToString($product2->price_sale)?>₫
+                            <?php echo number_format($product2->price_sale)?>₫
                         </div>
                     </a>
                     <div class="rating">

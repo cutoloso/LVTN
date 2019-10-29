@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Review;
 use DB, App\Customer, Auth, Cart;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class HomeController extends Controller
 {
@@ -31,6 +32,12 @@ class HomeController extends Controller
             ->where('product_image.active',1)
             ->select('products.*','product_image.img')
             ->get();
+        foreach ($best_sale as $bs){
+            $avgStar = DB::table('reviews')->where('pro_id',$bs->id)->where('parent',0)->avg('star');
+            $bs->avgStar = round($avgStar,1);
+            $totalReview = DB::table('reviews')->where('pro_id',$bs->id)->where('parent',0)->count();
+            $bs->totalReview = $totalReview;
+        }
         $best_feature = DB::table('products')
             ->where('products.active',1)
             ->where('products.best_feature',1)
@@ -38,6 +45,12 @@ class HomeController extends Controller
             ->where('product_image.active',1)
             ->select('products.*','product_image.img')
             ->get();
+        foreach ($best_feature as $bf){
+            $avgStar = DB::table('reviews')->where('pro_id',$bf->id)->where('parent',0)->avg('star');
+            $bf->avgStar = round($avgStar,1);
+            $totalReview = DB::table('reviews')->where('pro_id',$bf->id)->where('parent',0)->count();
+            $bf->totalReview = $totalReview;
+        }
         return view('home.index',[
             'banners'       => $banners,
             'best_sale'     => $best_sale,
@@ -105,13 +118,19 @@ class HomeController extends Controller
             ->where('product_image.active',1)
             ->select('products.*','product_image.img')
             ->get();
+        $reviewsAll = DB::table('reviews')
+            ->where('pro_id',$id)
+            ->get();
+        $totalReview = count($reviewsAll);
+
         $reviews = DB::table('reviews')
             ->select('reviews.*', 'users.name as usr_name')
             ->where('parent',0)
+            ->where('pro_id',$id)
             ->leftJoin('users','users.id','reviews.usr_id')
             ->orderBy('reviews.created_at','desc')
-            ->get();
-        $totalStar = count($reviews);
+            ->paginate(20);
+
         foreach ($reviews as $item){
             $subReviews = DB::table('reviews')->where('parent',$item->id)->get();
             if($subReviews){
@@ -128,7 +147,8 @@ class HomeController extends Controller
                 $item->subReview = $arrSub;
             }
         }
-        $avgStar = DB::table('reviews')->avg('star');
+        $avgStar = DB::table('reviews')->where('pro_id',$id)->where('parent',0)->avg('star');
+
         return view('shop.single',[
             'product'           =>$product,
             'bra_name'          =>$brand->name,
@@ -136,12 +156,41 @@ class HomeController extends Controller
             'relatedProducts'   => $relatedProducts,
             'att_vals'          => $att_vals,
             'reviews'           => $reviews,
-            'avgStar'           => (int)round($avgStar),
-            'totalStar'         => $totalStar,
+            'avgStar'           => round($avgStar,1),
+            'totalReview'         => $totalReview,
         ]);
     }
     /**
-     * get
+     * API get review
+     */
+    public function getReview($pro_id){
+        $reviews = DB::table('reviews')
+            ->select('reviews.*', 'users.name as usr_name')
+            ->where('parent',0)
+            ->where('pro_id',$pro_id)
+            ->leftJoin('users','users.id','reviews.usr_id')
+            ->orderBy('reviews.created_at','desc')
+            ->paginate(20);
+        foreach ($reviews as $item){
+            $subReviews = DB::table('reviews')->where('parent',$item->id)->get();
+            if($subReviews){
+                $arrSub = [];
+                foreach ($subReviews as $sub){
+                    $tempSub = DB::table('reviews')
+                        ->select('reviews.*', 'users.name as usr_name')
+                        ->where('reviews.id',$sub->id)
+                        ->leftJoin('users','users.id','reviews.usr_id')
+                        ->orderBy('reviews.created_at','desc')
+                        ->first();
+                    array_push($arrSub,$tempSub);
+                }
+                $item->subReview = $arrSub;
+            }
+        }
+        return response()->json(['reviews'=>$reviews]);
+    }
+    /**
+     * get Checkout
      */
     public  function getCheckOut(){
         $user = Auth::user();
@@ -182,6 +231,14 @@ class HomeController extends Controller
         $usr_id = Auth::user()->id;
         $customer = Customer::where('usr_id',$usr_id)->first();
         $cartProducts = Cart::content();
+
+        $requestContent = [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
+        ];
+
         return view('shop.payment',[
             'customer'      => $customer,
             'cartProducts'  => $cartProducts

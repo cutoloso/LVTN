@@ -13,11 +13,12 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($pro_id)
     {
         $reviews = DB::table('reviews')
             ->select('reviews.*', 'users.name as usr_name')
             ->where('parent',0)
+            ->where('pro_id', $pro_id)
             ->leftJoin('users','users.id','reviews.usr_id')
             ->orderBy('reviews.created_at','desc')
             ->get();
@@ -40,12 +41,13 @@ class ReviewController extends Controller
         return response()->json(['reviews'=>$reviews]);
     }
 
-    public function filter($star)
+    public function filter(Request $request)
         {
-            if ($star == -1){
+            if ($request->star == -1){
                 $reviews = DB::table('reviews')
                     ->select('reviews.*', 'users.name as usr_name')
                     ->where('parent',0)
+                    ->where('pro_id',$request->pro_id)
                     ->leftJoin('users','users.id','reviews.usr_id')
                     ->orderBy('reviews.created_at','desc')
                     ->get();
@@ -54,7 +56,8 @@ class ReviewController extends Controller
                 $reviews = DB::table('reviews')
                     ->select('reviews.*', 'users.name as usr_name')
                     ->where('parent',0)
-                    ->where('star',$star)
+                    ->where('pro_id',$request->pro_id)
+                    ->where('star',$request->star)
                     ->leftJoin('users','users.id','reviews.usr_id')
                     ->orderBy('reviews.created_at','desc')
                     ->get();
@@ -101,7 +104,7 @@ class ReviewController extends Controller
         $reviews->content    = $request->detail;
         $reviews->save();
 
-        return $this->index(-1);
+        return $this->index($request->pro_id);
     }
 
     /**

@@ -21,6 +21,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/fzaninotto/faker" />
@@ -105,17 +108,25 @@
       <path value="$PROJECT_DIR$/vendor/tijsverkoyen/css-to-inline-styles" />
       <path value="$PROJECT_DIR$/vendor/nesbot/carbon" />
       <path value="$PROJECT_DIR$/vendor/bumbummen99/shoppingcart" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
     </include_path>
   </component>
   <component name="ProjectId" id="1QQTO2hqsaL9wZuhFLbiIkhnscz" />
   <component name="PropertiesComponent">
+    <property name="NewWatcherDialog.advanced.open" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/user" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../admin-azmobile" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="editing.templates" />
+    <property name="settings.editor.selected.configurable" value="database.main" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\website-azmobile\resources\views\emails" />
       <recent name="C:\xampp\htdocs\website-azmobile\resources\views\user" />
       <recent name="C:\xampp\htdocs\website-azmobile\resources\views\Shop" />
     </key>
@@ -195,10 +206,49 @@
       <workItem from="1570505359538" duration="402000" />
       <workItem from="1570507704386" duration="3257000" />
       <workItem from="1570514938349" duration="9258000" />
+      <workItem from="1570547678516" duration="6054000" />
+      <workItem from="1570637727604" duration="2613000" />
+      <workItem from="1570674304024" duration="18191000" />
+      <workItem from="1570757133891" duration="6057000" />
+      <workItem from="1570776354327" duration="81000" />
+      <workItem from="1570776506502" duration="10367000" />
+      <workItem from="1570801874819" duration="3467000" />
+      <workItem from="1570845393395" duration="8627000" />
+      <workItem from="1570871048494" duration="843000" />
+      <workItem from="1571318728648" duration="1374000" />
+      <workItem from="1571361400032" duration="28000" />
+      <workItem from="1571422279226" duration="1354000" />
+      <workItem from="1571543670051" duration="14136000" />
+      <workItem from="1571579979774" duration="8645000" />
+      <workItem from="1572018252129" duration="3416000" />
+      <workItem from="1572088404650" duration="14381000" />
+      <workItem from="1572106057567" duration="1925000" />
+      <workItem from="1572189297750" duration="4669000" />
+      <workItem from="1572226721603" duration="8475000" />
+      <workItem from="1572254765845" duration="644000" />
+      <workItem from="1572260122573" duration="1031000" />
+      <workItem from="1572261168249" duration="13200000" />
+      <workItem from="1572357936252" duration="6249000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.env" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

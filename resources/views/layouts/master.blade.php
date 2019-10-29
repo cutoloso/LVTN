@@ -48,7 +48,7 @@
                 <a href="{{route('get-cart')}}" class="cart">
                     <span class="icon">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="count">1</span>
+                        <span class="count">@php echo getCountCart(); @endphp</span>
                     </span>
                 </a>
             </div>
@@ -68,24 +68,25 @@
                 <ul class="right">
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-sign-in-alt mr-2"></i>{{ __('Đăng nhập') }}</a>
                         </li>
                         @if (Route::has('register'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="nav-link" href="{{ route('register') }}"><i class="fas fa-user-plus mr-2"></i>{{ __('Đăng ký') }}</a>
                             </li>
                         @endif
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                Chào {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a href="/user/account" class="dropdown-item"><i class="fas fa-user mr-2"></i>Trang cá nhân</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    <i class="fas fa-sign-out-alt mr-2"></i>{{ __('Đăng xuất') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -139,7 +140,7 @@
                                 @if(getCountCart()>0)
                                     <div class="content">
                                         <span class="text">cart</span>
-                                        <span class="amount"><?php echo priceToString(getTotalPrice())?> ₫</span>
+                                        <span class="amount"><?php echo number_format(getTotalPrice())?> ₫</span>
                                     </div>
                                 @endif
                             </a>
@@ -197,10 +198,9 @@
                         Thông tin liên lạc
                     </div>
                     <ul class="content">
-                        <li>218 Fifth Avenue, HeavenTower
-                            NewYork City
+                        <li>123, 3/2, Xuân Khánh, Ninh Kiều, TP.Cần Thơ
                         </li>
-                        <li>(+68) 123 456 7890</li>
+                        <li>(+84) 123 456 789</li>
 
 
                     </ul>
@@ -233,9 +233,9 @@
                         Hỗ trợ tư vấn
                     </div>
                     <ul class="content">
-                        <li>Hỗ trợ kỹ thuật: <span>1800.1060 (7:30 - 22:00)</span></li>
-                        <li>Hỗ trợ tư vấn: <span> 1800.1062 (8:00 - 21:30)</span></li>
-                        <li>Gọi bảo hành: <span>1800.1064 (8:00 - 21:00)</span></li>
+                        <li>Hỗ trợ kỹ thuật: <span>1800.1111 (7:30 - 22:00)</span></li>
+                        <li>Hỗ trợ tư vấn: <span> 1800.2222 (8:00 - 21:30)</span></li>
+                        <li>Gọi bảo hành: <span>1800.3333 (8:00 - 21:00)</span></li>
 
                     </ul>
                 </div>
@@ -246,8 +246,8 @@
                         Hỗ trợ tư vấn
                     </div>
                     <ul class="content">
-                        <li>Hỗ trợ khách hàng: <span>Support@techone.com</span></li>
-                        <li>Báo lỗi bảo mật: <span>security@techone.vn</span></li>
+                        <li>Hỗ trợ khách hàng: <span>Support@azmobile.com</span></li>
+                        <li>Báo lỗi bảo mật: <span>Security@azmobile.vn</span></li>
                     </ul>
                 </div>
             </div>
@@ -255,7 +255,7 @@
         <div class="row">
             <div class="col-12 footer-bottom">
                 <div class="footer-bottom-copyright">
-                    © Copyright TechOne. All Rights Reserved.
+                    Thiết kế bởi AZMobile.
                 </div>
                 <div class="footer-bottom-social">
                     <a href="#">
@@ -298,6 +298,42 @@
 @yield('js')
 <script>
     $(document).ready(function () {
+        $('.add-cart').click(function () {
+            let current = $(this);
+            let htmlString = current.html();
+            current.html('<div class="ajax-loading"></div>');
+
+            let id = $(this).data('id');
+            $.ajax({
+                method: "POST",
+                url: '/add-to-cart/'+id,
+                data:{
+                    _token : "{{ csrf_token() }}"
+                },
+                beforeSend: function () {
+                    $('#header .header2 .header2-content .header2-control .icon .count').removeClass('heartBeat');
+                },
+                success: function (response) {
+                    setTimeout(function(){
+                        $('#header .header2 .header2-content .header2-control .icon .count').text(response.cartCount);
+                        $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').text(response.cartCount);
+
+                        if ($(window).width() > 575){
+                            current.html(htmlString);
+                        }else{
+                            current.html('<i class="fas fa-cart-plus"></i>');
+                        }
+                        $('body,html').animate({
+                                scrollTop: 0,
+                            }, 1000
+                        );
+                        $('#header .header2 .header2-content .header2-control .icon .count').addClass('heartBeat');
+                        $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').addClass('heartBeat');
+                    }, 500);
+                }
+            });
+
+        });
         if (sessionStorage.key('compare')){
             let compare = JSON.parse(sessionStorage.getItem('compare'));
             if(compare.pro1 || compare.pro2){

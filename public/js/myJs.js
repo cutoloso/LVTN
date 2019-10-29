@@ -29,10 +29,10 @@ $(document).ready(function () {
         autoplayHoverPause: true,
         responsive: {
             0: {
-                items: 1,
+                items: 2,
             },
             424: {
-                items: 2,
+                items: 3,
             },
             767: {
                 items: 3,
@@ -180,6 +180,9 @@ $(document).ready(function () {
         }
         $('#rating-star').val(value);
     });
-
+    $('.password-group').hide();
+    $('#editPasswd').click(function () {
+        $('.password-group').slideToggle();
+    });
 
 });

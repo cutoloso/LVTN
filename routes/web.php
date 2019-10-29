@@ -27,7 +27,7 @@ Route::get('get-city/{matp}','HomeController@getCity')->name('get-city');
 Route::get('get-ward/{maqh}','HomeController@getWard')->name('get-ward');
 
 //CartController
-Route::get('add-to-cart/{id}', 'CartController@addToCart')->name('add-to-cart');
+Route::post('add-to-cart/{id}', 'CartController@addToCart')->name('add-to-cart');
 Route::get('buy-now/{id}', 'CartController@buyNow')->name('buy-now');
 Route::get('cart', 'CartController@getCart')->name('get-cart');
 Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
@@ -42,7 +42,7 @@ Route::post('order','OrderController@store')->name('order.store');
 
 //Review
 Route::get('review','ReviewController@index')->name('review.index');
-Route::get('review-filter/{star}','ReviewController@filter')->name('review.filter');
+Route::get('review-filter','ReviewController@filter');
 Route::get('review-count/{star}','ReviewController@count')->name('review.count');
 Route::post('review','ReviewController@store')->name('review.store');
 
@@ -59,7 +59,12 @@ Route::get('category','HomeController@filter')->name('filter');
 Auth::routes();
 
 
-Route::get('test', function (){
+Route::get('user/account','UserController@account')->name('user.account');
+Route::put('user/account','UserController@update')->name('user.update');
+Route::get('user/order','UserController@getOrder')->name('user.order');
+Route::get('user/order/{id}','UserController@getOrderDetail')->name('user.orderShow');
+Route::get('user/review','UserController@getReview')->name('user.review');
+Route::get('api/review/{pro_id}', 'HomeController@getReview');
 
-    return view('shop.order-received');
-});
+
+Route::get('test/{id}','OrderController@sendMail');

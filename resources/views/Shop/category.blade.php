@@ -11,7 +11,7 @@
             <div class="col-12">
                 <div class="filter-brands">
                     @foreach($brands as $brand)
-                        <a href="{{route('filter',['bra_id' => $brand->id])}}" data-bra="{{$brand->id}}" id="brand-{!! $brand->id !!}" class="brand">
+                        <a class="link-brand" href="javascript:" data-href="{{route('filter',['bra_id' => $brand->id])}}" data-bra="{{$brand->id}}" id="brand-{!! $brand->id !!}" class="brand">
                             <img src="{{env('ADMIN_URL')}}/storage/brands/{{$brand->img}}" alt="{{$brand->name}}">
                         </a>
                     @endforeach
@@ -19,10 +19,10 @@
                 <ul class="filter-price">
                     <li class="title">Chọn mức giá:</li>
                     <li class="frange">
-                        <span class="link" id="min-0" data-min="0" data-max="2000000" >Dưới 2 triệu</span>
-                        <span class="link" id="min-2000000" data-min="2000000" data-max="4000000" >Từ 2-4 triệu</span>
-                        <span class="link" id="min-4000000" data-min="4000000" data-max="7000000" >Từ 4-7 triệu</span>
-                        <span class="link" id="min-7000000" data-min="7000000" data-max="99999999" >Trên 7 triệu</span>
+                        <span class="link-price" id="min-0" data-min="0" data-max="2000000" >Dưới 2 triệu</span>
+                        <span class="link-price" id="min-2000000" data-min="2000000" data-max="4000000" >Từ 2-4 triệu</span>
+                        <span class="link-price" id="min-4000000" data-min="4000000" data-max="7000000" >Từ 4-7 triệu</span>
+                        <span class="link-price" id="min-7000000" data-min="7000000" data-max="99999999" >Trên 7 triệu</span>
                         <a class="reset btn btn-danger btn-sm" href="{{route('filter')}}">
                             <span>Reset bộ lọc</span>
                             <i class="fas fa-times"></i>
@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="product-info">
                                         <div class="star-rating">
-                                            <span class="star" style="width: 80%"></span>
+                                            <span class="star" style="width: {{getAvgStar($product->id)*20}}%"></span>({{getTotalReview($product->id)}})
                                         </div>
                                         <a href="">
                                             <div class="product-name">
@@ -111,7 +111,7 @@
                     @endforeach
                 </div>
             </div>
-            <div class="col-12 cat-pagination d-flex justify-content-center"> {{ $products->links() }}</div>
+            <div class="col-12 pagination-wrapper d-flex justify-content-center"> {{ $products->links() }}</div>
         </div>
     </div>
 </section>
@@ -129,10 +129,12 @@
         $(document).ready(function () {
             let jsonBrands = {!! json_encode($brands) !!};
             let urlParams = new URLSearchParams(location.search);
+            let linkBrand = $('.link-brand');
+            let linkPrice = $('.link-price');
             let titleFilter = 'Điện thoại';
             if (urlParams.has('bra_id') || urlParams.has('bra_id')){
                 if (urlParams.has('bra_id')){
-                    $('.brand').removeClass('active');
+                    linkBrand.removeClass('active');
                     let brandId = parseInt(urlParams.get('bra_id'));
                     $('#brand-'+brandId).addClass('active');
 
@@ -147,7 +149,7 @@
                     }
                 }
                 if (urlParams.has('min_price')){
-                    $('.link').removeClass('active');
+                    linkPrice.removeClass('active');
                     let e = $('#min-'+urlParams.get('min_price'))
                         .addClass('active');
                     titleFilter += ' <span>'+e.text()+'</span>'
@@ -164,23 +166,47 @@
             }
 
             $('.watching').html(titleFilter);
+            linkBrand.click(function () {
+                if($(this).hasClass('active')){
+                    let a=window.location.href;
+                    let t='?bra_id='+urlParams.get('bra_id');
+                    let s=a.replace(t, '');
+                    location.replace(s);
+                }
+                else {
+                    location.replace($(this).data('href'));
+                }
+            });
 
-            jQuery('.link').on('click',function () {
+            linkPrice.click(function () {
                 let a=window.location.href;
                 let min=urlParams.get('min_price');
                 let max=urlParams.get('max_price');
                 let t="min_price="+min+"&max_price="+max;
-                if(a.indexOf('category') > -1)
-                {
-                    t="&min_price="+min+"&max_price="+max;
+                let b = "";
+                let s ="";
+                if($(this).hasClass('active')){
+                    if(a.indexOf('category') > -1)
+                    {
+                        t="&min_price="+min+"&max_price="+max;
+                    }
+                    s = a.replace(t, '');
+
                 }
-                let s = a.replace(t, '');
-                let b="?min_price="+$(this).data('min')+"&max_price="+$(this).data('max');
-                if(a.indexOf('?') > -1){
-                    b="&min_price="+$(this).data('min')+"&max_price="+$(this).data('max');
+                else{
+                    if(a.indexOf('category') > -1)
+                    {
+                        t="&min_price="+min+"&max_price="+max;
+                    }
+                    s = a.replace(t, '');
+                    b="?min_price="+$(this).data('min')+"&max_price="+$(this).data('max');
+                    if(a.indexOf('?') > -1){
+                        b="&min_price="+$(this).data('min')+"&max_price="+$(this).data('max');
+                    }
                 }
+
                 location.replace(s+b);
-            })
+            });
 
             $('.sort a').click(function () {
                 let a=window.location.href;

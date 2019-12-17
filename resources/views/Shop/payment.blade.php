@@ -50,7 +50,7 @@
                                         <span class="product-title">&nbsp{{$cartProduct->name}}</span>
                                     </div>
                                     <div class="right price">
-                                        <?php echo number_format($cartProduct->options->price_sale*$cartProduct->qty)?> ₫
+                                        <?php echo number_format($cartProduct->options->price_sale*$cartProduct->qty,0 ,'.' ,'.')?> ₫
                                     </div>
                                 </div>
                             @endforeach
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div class="price-total">
-                            <span class="title">Tổng tiền</span> <span class="price"><?php echo number_format(getTotalPrice())?> ₫ </span>
+                            <span class="title">Tổng tiền</span> <span class="price"><?php echo number_format(getTotalPrice(),0 ,'.' ,'.')?> ₫ </span>
                         </div>
                     </div>
 

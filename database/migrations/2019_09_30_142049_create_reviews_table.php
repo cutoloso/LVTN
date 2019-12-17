@@ -21,6 +21,7 @@ class CreateReviewsTable extends Migration
             $table->text('content')->nullable()->default('');
             $table->smallInteger('star')->nullable()->default(0);
             $table->bigInteger('parent')->nullable()->default(0);
+            $table->boolean('active')->nullable()->default(1);
             $table->timestamps();
         });
     }

@@ -30,7 +30,7 @@ Route::get('get-ward/{maqh}','HomeController@getWard')->name('get-ward');
 Route::post('add-to-cart/{id}', 'CartController@addToCart')->name('add-to-cart');
 Route::get('buy-now/{id}', 'CartController@buyNow')->name('buy-now');
 Route::get('cart', 'CartController@getCart')->name('get-cart');
-Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
+//Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
 Route::get('del-cart-item/{rowId}', 'CartController@deleteCartItem')->name('delete-cart-item');
 Route::put('update-cart-item/{rowId}', 'CartController@updateCartItem')->name('update-cart-item');
 
@@ -58,7 +58,7 @@ Route::get('category','HomeController@filter')->name('filter');
 
 Auth::routes();
 
-
+//account
 Route::get('user/account','UserController@account')->name('user.account');
 Route::put('user/account','UserController@update')->name('user.update');
 Route::get('user/order','UserController@getOrder')->name('user.order');
@@ -67,4 +67,4 @@ Route::get('user/review','UserController@getReview')->name('user.review');
 Route::get('api/review/{pro_id}', 'HomeController@getReview');
 
 
-Route::get('test/{id}','OrderController@sendMail');
+Route::get('check-count-review/{id}','ReviewController@checkCountReview')->name('checkCountReview');

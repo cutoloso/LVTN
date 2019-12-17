@@ -269,9 +269,9 @@
                     </a>
                 </div>
                 <div class="footer-bottom-brand">
+                    <img src="{{asset('images/paypal.jpg')}}" alt="">
                     <img src="{{asset('images/visa.svg')}}" alt="">
                     <img src="{{asset('images/mastercard.svg')}}" alt="">
-                    <img src="{{asset('images/american.png')}}" alt="">
                     <img src="{{asset('images/jcb.svg')}}" alt="">
                 </div>
             </div>
@@ -315,6 +315,7 @@
                 },
                 success: function (response) {
                     setTimeout(function(){
+                        $('#header .header2 .header2-content .header2-control .cart-wrapper .cart .content').text('');
                         $('#header .header2 .header2-content .header2-control .icon .count').text(response.cartCount);
                         $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').text(response.cartCount);
 

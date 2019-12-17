@@ -112,11 +112,11 @@
                     <div class="summary-content">
                         <div class="price-wrapper">
                             <span class="price">
-                                <?php echo number_format($product->price_sale)?>₫
+                                <?php echo number_format($product->price_sale,0 ,'.' ,'.')?>₫
                             </span>
                             @if($product->price_sale != '' && $product->price_sale != $product->price)
                                 <del class="price-sale">
-                                    <?php echo number_format($product->price)?>₫
+                                    <?php echo number_format($product->price,0 ,'.' ,'.')?>₫
                                 </del>
                             @endif
                         </div>
@@ -147,7 +147,7 @@
                         </div>
                         <div class="btn-wrapper">
                             <a href="{{route('buy-now',$product->id)}}" class="buy-now btn">Mua ngay <br> <span>Giao hàng toàn quốc</span></a>
-                            <a href="javascript:"  data-id="{{$product->id}}" class="add-cart-single btn">Thêm vào giỏ <br> <span>Ship COD</span></a>
+                            <a href="javascript:"  data-id="{{$product->id}}" class="add-cart add-cart-single btn">Thêm vào giỏ <br> <span>Ship COD</span></a>
                         </div>
                         <div class="callorder">
                             Gọi đặt mua: <a href="tel:1800xxxx">1800.xxxx</a> (miễn phí - 7:30-22:00)
@@ -270,7 +270,7 @@
                                 </div>
                                 @endif
                             </div>
-                            @if (Auth::check())
+                            @if ( Auth::check() && $checkCountReview == 0 )
                                 <div class="row review-customer">
                                     <div class="col-12 title">
                                         Gửi nhận xét của bạn
@@ -303,7 +303,7 @@
                                                 <textarea placeholder="Nhận xét của bạn về sản phẩm này"
                                                           class="form-control" name="detail" id="review-detail" cols="30"
                                                           rows="10" data-bv-field="detail" required></textarea>
-                                                <small class="help-block text-danger review-detail-error">Nội dung chứa ít nhất 50 ký tự</small>
+                                                <small class="help-block text-danger review-detail-error">Nội dung chứa ít nhất 20 từ</small>
                                             </div>
                                             <input type="hidden" value="{{$product->id}}" name="pro_id" id="pro-id">
                                             <div class="action">
@@ -467,7 +467,7 @@
                                                 <a href="">{{$relatedProduct->name}}</a>
                                             </div>
                                             <div class="product-price">
-                                                <?php echo number_format($relatedProduct->price)?>
+                                                <?php echo number_format($relatedProduct->price,0 ,'.' ,'.')?>
                                             </div>
                                             <div class="group-button">
                                                 <div class="inner">
@@ -514,6 +514,25 @@
         </div>
     </div>
 
+    <!-- The modal Validate review -->
+    <div class="modal" id="modal-review">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Vui lòng kiểm tra lại đánh giá của bạn. Nội dung và số sao đánh giá phải phù hợp</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -522,42 +541,42 @@
 {{--    <script src="{{asset('app/ReviewController.js')}}"></script>--}}
     <script>
         $(document).ready(function () {
-            $('.add-cart-single').click(function () {
-                let htmlString = $( this ).html();
-                let current = $(this);
-                current.html('<div class="ajax-loading"></div>');
+            {{--$('.add-cart-single').click(function () {--}}
+            {{--    let htmlString = $( this ).html();--}}
+            {{--    let current = $(this);--}}
+            {{--    current.html('<div class="ajax-loading"></div>');--}}
 
-                let id = $(this).data('id');
-                $.ajax({
-                    method: "POST",
-                    url: '/add-to-cart/'+id,
-                    data:{
-                        _token : "{{ csrf_token() }}"
-                    },
-                    beforeSend: function () {
-                        $('#header .header2 .header2-content .header2-control .icon .count').removeClass('heartBeat');
-                    },
-                    success: function (response) {
-                        setTimeout(function(){
-                            $('#header .header2 .header2-content .header2-control .icon .count').text(response.cartCount);
-                            $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').text(response.cartCount);
+            {{--    let id = $(this).data('id');--}}
+            {{--    $.ajax({--}}
+            {{--        method: "POST",--}}
+            {{--        url: '/add-to-cart/'+id,--}}
+            {{--        data:{--}}
+            {{--            _token : "{{ csrf_token() }}"--}}
+            {{--        },--}}
+            {{--        beforeSend: function () {--}}
+            {{--            $('#header .header2 .header2-content .header2-control .icon .count').removeClass('heartBeat');--}}
+            {{--        },--}}
+            {{--        success: function (response) {--}}
+            {{--            setTimeout(function(){--}}
+            {{--                $('#header .header2 .header2-content .header2-control .icon .count').text(response.cartCount);--}}
+            {{--                $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').text(response.cartCount);--}}
 
-                            if ($(window).width() > 575){
-                                current.html(htmlString);
-                            }else{
-                                current.html('<i class="fas fa-cart-plus"></i>');
-                            }
-                            $('body,html').animate({
-                                    scrollTop: 0,
-                                }, 500
-                            );
-                            $('#header .header2 .header2-content .header2-control .icon .count').addClass('heartBeat');
-                            $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').addClass('heartBeat');
-                        }, 500);
-                    }
-                });
+            {{--                if ($(window).width() > 575){--}}
+            {{--                    current.html(htmlString);--}}
+            {{--                }else{--}}
+            {{--                    current.html('<i class="fas fa-cart-plus"></i>');--}}
+            {{--                }--}}
+            {{--                $('body,html').animate({--}}
+            {{--                        scrollTop: 0,--}}
+            {{--                    }, 500--}}
+            {{--                );--}}
+            {{--                $('#header .header2 .header2-content .header2-control .icon .count').addClass('heartBeat');--}}
+            {{--                $('#header-mobile .menu-mb-col .menu-mb-cart .icon .count').addClass('heartBeat');--}}
+            {{--            }, 500);--}}
+            {{--        }--}}
+            {{--    });--}}
 
-            });
+            {{--});--}}
             //update reviews
             function updateReview(dataReviews) {
                 let html = '';
@@ -666,38 +685,88 @@
             }
 
             afterUpdateReviews();
+            function addReview(pro_id, star, title, detail, sentiment){
+                $.ajax({
+                    url: '{{route("review.store")}}',
+                    method: 'POST',
+                    dataType: "json",
+                    data: {
+                        _token: "{{csrf_token()}}",
+                        pro_id: pro_id,
+                        parent: 0,
+                        star: star,
+                        title: title,
+                        detail: detail,
+                        sentiment: sentiment
+
+                    },
+                    beforeSend: function(data){
+                        // console.log(data);
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        let html = updateReview(response.reviews);
+                        $('.review-list').html(html);
+                        afterUpdateReviews();
+                        console.log('added review');
+                        $('.review-customer').hide();
+                    }
+                });
+            }
 
             $('.js-add-review').click(function () {
-                if ($('#review-detail').val() !=''){
+                let reviewDetail = $('#review-detail');
+                let lenReviewDetail = reviewDetail.val().split(" ").length;
+                if ( lenReviewDetail > 0){
                     $('.review-detail-error').css('display','none');
                     let star = $('#rating-star').val();
                     let title = $('#review-title').val();
-                    let detail = $('#review-detail').val();
+                    let detail = reviewDetail.val();
                     let pro_id = $('#pro-id').val();
 
                     $.ajax({
-                        url: '{{route("review.store")}}',
+                        url : 'http://127.0.0.1:5000/sentiment',
                         method: 'POST',
-                        dataType: "json",
                         data: {
-                            _token: "{{csrf_token()}}",
-                            pro_id: pro_id,
-                            parent: 0,
-                            star: star,
-                            title: title,
-                            detail: detail,
-
-                        },
-                        beforeSend: function(data){
-                            // console.log(data);
+                            'review' : detail
                         },
                         success: function (response) {
-                            console.log(response);
-                            let html = updateReview(response.reviews);
-                            $('.review-list').html(html);
-                            afterUpdateReviews();
-                        }
+                            if (response.sentiment <= 0.5 && star <= 3 || response.sentiment > 0.5 && star > 3){
+                                console.log('ok');
+                                addReview(pro_id, star, title, detail, response.sentiment)
+                            }
+                            else {
+                                // alert('senti: '+response.sentiment+' star: '+star);
+                                $('#modal-review').modal('show');
+                            }
+                        },
                     });
+
+
+
+                    {{--$.ajax({--}}
+                    {{--    url: '{{route("review.store")}}',--}}
+                    {{--    method: 'POST',--}}
+                    {{--    dataType: "json",--}}
+                    {{--    data: {--}}
+                    {{--        _token: "{{csrf_token()}}",--}}
+                    {{--        pro_id: pro_id,--}}
+                    {{--        parent: 0,--}}
+                    {{--        star: star,--}}
+                    {{--        title: title,--}}
+                    {{--        detail: detail,--}}
+
+                    {{--    },--}}
+                    {{--    beforeSend: function(data){--}}
+                    {{--        // console.log(data);--}}
+                    {{--    },--}}
+                    {{--    success: function (response) {--}}
+                    {{--        console.log(response);--}}
+                    {{--        let html = updateReview(response.reviews);--}}
+                    {{--        $('.review-list').html(html);--}}
+                    {{--        afterUpdateReviews();--}}
+                    {{--    }--}}
+                    {{--});--}}
                 }
                 else {
                     $('.review-detail-error').css('display','block');
@@ -747,7 +816,6 @@
             {{--        }--}}
             {{--    })--}}
             {{--}--}}
-
         });
     </script>
 @endsection

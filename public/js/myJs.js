@@ -11,7 +11,8 @@ $(document).ready(function () {
             "<i class='fas fa-angle-left'></i>",
             "<i class='fas fa-angle-right'></i>"
         ],
-        autoplay: false,
+        
+        autoplay: true,
         autoplayHoverPause: true,
         items: 1
     });

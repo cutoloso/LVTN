@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\OrderProduct, App\Order, Cart, DB;
+use App\OrderProduct, App\Order, Cart, DB, Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -76,6 +76,7 @@ class OrderController extends Controller
 //            'orderProduct'  => $orderProduct,
 //            'order'         => $order
 //        ]);
+        Session::flash('success', 'Đặt hàng thành công, vui lòng kiểm tra email.');
         return redirect()->route('get-cart');
     }
 

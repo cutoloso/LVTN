@@ -18,18 +18,20 @@ class ReviewController extends Controller
         $reviews = DB::table('reviews')
             ->select('reviews.*', 'users.name as usr_name')
             ->where('parent',0)
+            ->where('reviews.active',1)
             ->where('pro_id', $pro_id)
             ->leftJoin('users','users.id','reviews.usr_id')
             ->orderBy('reviews.created_at','desc')
             ->get();
         foreach ($reviews as $item){
-            $subReviews = DB::table('reviews')->where('parent',$item->id)->get();
+            $subReviews = DB::table('reviews')->where('parent',$item->id)->where('reviews.active',1)->get();
             if($subReviews){
                 $arrSub = [];
                 foreach ($subReviews as $sub){
                     $tempSub = DB::table('reviews')
                         ->select('reviews.*', 'users.name as usr_name')
                         ->where('reviews.id',$sub->id)
+                        ->where('reviews.active',1)
                         ->leftJoin('users','users.id','reviews.usr_id')
                         ->orderBy('reviews.created_at','desc')
                         ->first();
@@ -47,6 +49,8 @@ class ReviewController extends Controller
                 $reviews = DB::table('reviews')
                     ->select('reviews.*', 'users.name as usr_name')
                     ->where('parent',0)
+                    ->where('reviews.active',1)
+                    ->where('reviews.active',1)
                     ->where('pro_id',$request->pro_id)
                     ->leftJoin('users','users.id','reviews.usr_id')
                     ->orderBy('reviews.created_at','desc')
@@ -56,6 +60,8 @@ class ReviewController extends Controller
                 $reviews = DB::table('reviews')
                     ->select('reviews.*', 'users.name as usr_name')
                     ->where('parent',0)
+                    ->where('reviews.active',1)
+                    ->where('reviews.active',1)
                     ->where('pro_id',$request->pro_id)
                     ->where('star',$request->star)
                     ->leftJoin('users','users.id','reviews.usr_id')
@@ -63,13 +69,14 @@ class ReviewController extends Controller
                     ->get();
             }
             foreach ($reviews as $item){
-                $subReviews = DB::table('reviews')->where('parent',$item->id)->get();
+                $subReviews = DB::table('reviews')->where('parent',$item->id)->where('reviews.active',1)->get();
                 if($subReviews){
                     $arrSub = [];
                     foreach ($subReviews as $sub){
                         $tempSub = DB::table('reviews')
                             ->select('reviews.*', 'users.name as usr_name')
                             ->where('reviews.id',$sub->id)
+                            ->where('reviews.active',1)
                             ->leftJoin('users','users.id','reviews.usr_id')
                             ->orderBy('reviews.created_at','desc')
                             ->first();
@@ -102,6 +109,13 @@ class ReviewController extends Controller
             $reviews->title    = $request->title;
         }
         $reviews->content    = $request->detail;
+
+        if ($request->sentiment > 0.5){
+            $reviews->sentiment = 1;
+        }
+        else{
+            $reviews->sentiment = 0;
+        }
         $reviews->save();
 
         return $this->index($request->pro_id);
@@ -150,5 +164,14 @@ class ReviewController extends Controller
     public function destroy(Review $review)
     {
 
+    }
+
+    public function checkCountReview($pro_id){
+        $usr_id = Auth::user()->id;
+        $count = DB::table('reviews')
+            ->where('pro_id',$pro_id)
+            ->where('usr_id',$usr_id)
+            ->count('id');
+        return $count;
     }
 }

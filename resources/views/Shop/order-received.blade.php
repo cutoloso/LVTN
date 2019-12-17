@@ -22,7 +22,7 @@
                                             @endphp
                                         <tr>
                                             <td>{{$product->name}}  <span>x {{$product->quantity}}</span></td>
-                                            <td><?php echo number_format($price)?> ₫</td>
+                                            <td><?php echo number_format($price,0 ,'.' ,'.')?> ₫</td>
                                         </tr>
                                         @endforeach
                                         <tr>
@@ -33,7 +33,7 @@
                                         <tfoot>
                                         <tr>
                                             <th>Tổng:</th>
-                                            <td><?php echo number_format($order->total_price)?> ₫</td>
+                                            <td><?php echo number_format($order->total_price,0 ,'.' ,'.')?> ₫</td>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -84,7 +84,7 @@
                                     </tr>
                                     <tr>
                                         <td>TỔNG CỘNG:</td>
-                                        <th><?php echo number_format($order->total_price)?> ₫</th>
+                                        <th><?php echo number_format($order->total_price,0 ,'.' ,'.')?> ₫</th>
                                     </tr>
                                     <tr>
                                         <td>PHƯƠNG THỨC THANH TOÁN:</td>

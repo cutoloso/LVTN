@@ -120,19 +120,19 @@
     <property name="NewWatcherDialog.advanced.open" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../admin-azmobile" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="database.main" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\website-azmobile\resources\views" />
+      <recent name="C:\xampp\htdocs\website-azmobile\resources\views\auth" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\website-azmobile\resources\views\emails" />
       <recent name="C:\xampp\htdocs\website-azmobile\resources\views\user" />
       <recent name="C:\xampp\htdocs\website-azmobile\resources\views\Shop" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\website-azmobile\resources\views" />
-      <recent name="C:\xampp\htdocs\website-azmobile\resources\views\auth" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -228,7 +228,39 @@
       <workItem from="1572254765845" duration="644000" />
       <workItem from="1572260122573" duration="1031000" />
       <workItem from="1572261168249" duration="13200000" />
-      <workItem from="1572357936252" duration="6303000" />
+      <workItem from="1572357936252" duration="6429000" />
+      <workItem from="1572397177043" duration="55000" />
+      <workItem from="1572442518193" duration="1252000" />
+      <workItem from="1573035156783" duration="699000" />
+      <workItem from="1573967147761" duration="94000" />
+      <workItem from="1573967261010" duration="550000" />
+      <workItem from="1574040809691" duration="53000" />
+      <workItem from="1574040880014" duration="118000" />
+      <workItem from="1574486412363" duration="8445000" />
+      <workItem from="1574501058256" duration="2432000" />
+      <workItem from="1574514672212" duration="3578000" />
+      <workItem from="1574659548840" duration="886000" />
+      <workItem from="1574897177996" duration="269000" />
+      <workItem from="1574981697102" duration="145000" />
+      <workItem from="1575083664165" duration="18320000" />
+      <workItem from="1575161759944" duration="26000" />
+      <workItem from="1575254566216" duration="1034000" />
+      <workItem from="1575430485769" duration="10000" />
+      <workItem from="1575430525506" duration="1357000" />
+      <workItem from="1575711617782" duration="205000" />
+      <workItem from="1575769552293" duration="8253000" />
+      <workItem from="1575852324583" duration="1384000" />
+      <workItem from="1575884386809" duration="660000" />
+      <workItem from="1575948688120" duration="9674000" />
+      <workItem from="1575995759676" duration="2309000" />
+      <workItem from="1576031574173" duration="75000" />
+      <workItem from="1576033212348" duration="2276000" />
+      <workItem from="1576113657442" duration="2805000" />
+      <workItem from="1576148182326" duration="20000" />
+      <workItem from="1576149827620" duration="1120000" />
+      <workItem from="1576157153843" duration="473000" />
+      <workItem from="1576161920835" duration="1188000" />
+      <workItem from="1576375221359" duration="1226000" />
     </task>
     <servers />
   </component>

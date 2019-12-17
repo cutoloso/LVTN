@@ -14,7 +14,8 @@
                     @foreach($banners as $banner)
                     <div class="slider-item">
                         <img src="{{env('ADMIN_URL')}}/storage/banners/{{$banner->img}}" alt="banner">
-                        <a href="{{$banner->link}}" class="btn-shopping">Mua ngay</a>
+{{--                        <a href="{{$banner->link}}" class="btn-shopping">Mua ngay</a>--}}
+                        <a href="{{$banner->link}}"></a>
                     </div>
                     @endforeach
                 </div>
@@ -73,9 +74,9 @@
 
                                     <div class="product-price">
                                         @if($item_sale->price_sale =='')
-                                            @php echo number_format($item_sale->price).'₫'; @endphp
+                                            @php echo number_format($item_sale->price,0 ,'.' ,'.').'₫'; @endphp
                                         @else
-                                            @php echo number_format($item_sale->price_sale).'₫'; @endphp
+                                            @php echo number_format($item_sale->price_sale,0 ,'.' ,'.').'₫'; @endphp
                                         @endif
                                     </div>
                                     <div class="group-button">

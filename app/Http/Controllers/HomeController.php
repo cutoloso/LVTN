@@ -25,19 +25,40 @@ class HomeController extends Controller
      */
     public function index(){
         $banners = DB::table('banners')->get();
-        $best_sale = DB::table('products')
-            ->where('products.active',1)
-            ->where('products.best_sale',1)
-            ->leftJoin('product_image','products.id','=','product_image.pro_id')
-            ->where('product_image.active',1)
-            ->select('products.*','product_image.img')
+
+        $best_order = DB::table('order_product')
+            ->select(DB::raw('pro_id, count(order_product.id) as orders_count'))
+            ->groupBy('pro_id')
+            ->orderBy('orders_count', 'desc')
             ->get();
+        $best_sale = [];
+        foreach ($best_order as $product){
+            $info_pro = DB::table('products')
+                ->where('products.id',$product->pro_id)
+                ->where('products.active',1)
+                ->leftJoin('product_image','products.id','=','product_image.pro_id')
+                ->where('product_image.active',1)
+                ->select('products.*','product_image.img')
+                ->first();
+            if (! empty($info_pro)){
+                array_push($best_sale,$info_pro);
+            }
+        }
+//        $best_sale = DB::table('products')
+//            ->where('products.active',1)
+//            ->where('products.best_sale',1)
+//            ->leftJoin('product_image','products.id','=','product_image.pro_id')
+//            ->where('product_image.active',1)
+//            ->select('products.*','product_image.img')
+//            ->get();
         foreach ($best_sale as $bs){
             $avgStar = DB::table('reviews')->where('pro_id',$bs->id)->where('parent',0)->avg('star');
             $bs->avgStar = round($avgStar,1);
             $totalReview = DB::table('reviews')->where('pro_id',$bs->id)->where('parent',0)->count();
             $bs->totalReview = $totalReview;
         }
+//        return $best_sale;
+
         $best_feature = DB::table('products')
             ->where('products.active',1)
             ->where('products.best_feature',1)
@@ -122,15 +143,14 @@ class HomeController extends Controller
             ->where('pro_id',$id)
             ->get();
         $totalReview = count($reviewsAll);
-
         $reviews = DB::table('reviews')
             ->select('reviews.*', 'users.name as usr_name')
             ->where('parent',0)
             ->where('pro_id',$id)
+            ->where('reviews.active',1)
             ->leftJoin('users','users.id','reviews.usr_id')
             ->orderBy('reviews.created_at','desc')
             ->paginate(20);
-
         foreach ($reviews as $item){
             $subReviews = DB::table('reviews')->where('parent',$item->id)->get();
             if($subReviews){
@@ -148,6 +168,14 @@ class HomeController extends Controller
             }
         }
         $avgStar = DB::table('reviews')->where('pro_id',$id)->where('parent',0)->avg('star');
+        $count = 0;
+        if (Auth::check()){
+            $usr_id = Auth::user()->id;
+            $count = DB::table('reviews')
+                ->where('pro_id',$id)
+                ->where('usr_id',$usr_id)
+                ->count('id');
+        }
 
         return view('shop.single',[
             'product'           =>$product,
@@ -157,7 +185,8 @@ class HomeController extends Controller
             'att_vals'          => $att_vals,
             'reviews'           => $reviews,
             'avgStar'           => round($avgStar,1),
-            'totalReview'         => $totalReview,
+            'totalReview'       => $totalReview,
+            'checkCountReview'  => $count
         ]);
     }
     /**

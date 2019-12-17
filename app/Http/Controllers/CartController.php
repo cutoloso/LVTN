@@ -128,11 +128,8 @@ class CartController extends Controller
     }
     public function deleteCartItem($rowId){
         Cart::remove($rowId);
-        if (Cart::count()!=0){
+        if (Cart::count() != 0){
             Session::flash('success', 'Đã xóa 1 sản phẩm khỏi giỏ hàng');
-        }
-        else{
-            Session::flash('false', 'Giỏ hàng không có sản phẩm. Vui lòng quay lại mua sắm.');
         }
         return redirect()->route('get-cart');
     }

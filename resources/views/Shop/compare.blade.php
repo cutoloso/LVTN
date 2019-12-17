@@ -29,7 +29,7 @@
                             {!! $product1->name !!}
                         </div>
                         <div class="product-price">
-                            <?php echo number_format($product1->price_sale)?>₫
+                            <?php echo number_format($product1->price_sale,0 ,'.' ,'.')?>₫
                         </div>
                     </a>
                     <div class="rating">
@@ -52,7 +52,7 @@
                             {!! $product2->name !!}
                         </div>
                         <div class="product-price">
-                            <?php echo number_format($product2->price_sale)?>₫
+                            <?php echo number_format($product2->price_sale,0 ,'.' ,'.')?>₫
                         </div>
                     </a>
                     <div class="rating">
@@ -242,34 +242,7 @@
 @section('js')
     <script>
         $(document).ready(function () {
-            $('.add-cart').click(function () {
-                let htmlString = $( this ).html();
-                $(this).html('<div class="ajax-loading"></div>');
 
-                let id = $(this).data('id');
-                $.ajax({
-                    method: "GET",
-                    url: '/add-to-cart/'+id,
-                    data:{
-                        _token : "{{ csrf_token() }}"
-                    },
-                    beforeSend: function () {
-                        $('#header .header2 .header2-content .header2-control .icon .count').removeClass('heartBeat');
-                    },
-                    success: function (response) {
-                        setTimeout(function(){
-                            $('#header .header2 .header2-content .header2-control .icon .count').text(response.cartCount);
-                            $('.add-cart').html(htmlString);
-                            $('body,html').animate({
-                                    scrollTop: 0,
-                                }, 500
-                            );
-                            $('#header .header2 .header2-content .header2-control .icon .count').addClass('heartBeat');
-                        }, 500);
-                    }
-                });
-
-            });
 
             // xóa tất cả item trong sessionStorage
             sessionStorage.clear();

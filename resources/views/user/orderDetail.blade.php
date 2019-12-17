@@ -71,13 +71,13 @@
                                                         <p>Sku:  {{$item->pro_code}}</p>
                                                     </div>
                                                 </td>
-                                                <td><?php echo number_format($item->price)?> ₫</td>
+                                                <td><?php echo number_format($item->price,0 ,'.' ,'.')?> ₫</td>
                                                 <td>
                                                     {{$item->quantity}}
                                                 </td>
-                                                <td><?php echo number_format($item->price - $item->price_sale)?> ₫</td>
+                                                <td><?php echo number_format($item->price - $item->price_sale,0 ,'.' ,'.')?> ₫</td>
 
-                                                <td><?php echo number_format($item->price_sale)?> ₫</td>
+                                                <td><?php echo number_format($item->price_sale,0 ,'.' ,'.')?> ₫</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -86,11 +86,11 @@
                                             <td colspan="4" class="">
                                                 <span>Tạm tính</span>
                                             </td>
-                                            <td><?php echo number_format($order->total_price)?> ₫</td>
+                                            <td><?php echo number_format($order->total_price,0 ,'.' ,'.')?> ₫</td>
                                         </tr>
                                         <tr>
                                             <td colspan="4"><span>Tổng cộng</span></td>
-                                            <td><span class="sum"><?php echo number_format($order->total_price)?> ₫</span></td>
+                                            <td><span class="sum"><?php echo number_format($order->total_price,0 ,'.' ,'.')?> ₫</span></td>
                                         </tr>
                                         </tfoot>
                                     </table>

@@ -57,9 +57,9 @@
                                         </div>
                                         <div class="col-right">
                                             <div class="box-price">
-                                                <div class="price-sale"><?php echo number_format($product->options->price_sale*$product->qty)?> ₫</div>
+                                                <div class="price-sale"><?php echo number_format($product->options->price_sale*$product->qty,0 ,'.' ,'.')?> ₫</div>
                                                 @if($product->options->price_sale!=$product->price)
-                                                    <div class="primary-price"><?php echo number_format($product->price*$product->qty)?> ₫
+                                                    <div class="primary-price"><?php echo number_format($product->price*$product->qty,0 ,'.' ,'.')?> ₫
                                                         <span class="sale">-{{100 - round((($product->options->price_sale*$product->qty)/($product->price*$product->qty))*100)}}%</span>
                                                     </div>
                                                 @endif
@@ -87,7 +87,7 @@
                 <div class="col-xl-3 col-md-4 col-12">
                     <div class="cart-price">
                         <div class="total-price">
-                            <span class="label">Tổng: </span><?php echo number_format(getTotalPrice())?> ₫
+                            <span class="label">Tổng: </span><?php echo number_format(getTotalPrice(),0 ,'.' ,'.')?> ₫
                         </div>
                     </div>
                     <a class="btn btn-checkout" href="{{route('get-checkout')}}">Tiến hành đặt hàng</a>

@@ -67,7 +67,7 @@
                                             </a>
                                         </div>
                                         <div class="group-button-mobile">
-                                            <a href="javascript:" data-id="{{$product->id}}" class="add-cart">Thêm vào giỏ</a>
+                                            <a href="javascript:" data-id="{{$product->id}}" class="add-cart"><i class="fas fa-cart-plus"></i></a>
                                             <a href="javascript:" data-id="{{$product->id}}" class="btn-compare">
                                                 <i class="fas fa-exchange-alt"></i>
                                             </a>
@@ -75,6 +75,7 @@
                                                 <i class="far fa-heart"></i>
                                             </a>
                                         </div>
+
                                     </div>
                                     <div class="product-info">
                                         <div class="star-rating">
@@ -88,9 +89,9 @@
 
                                         <div class="product-price">
                                             @if($product->price_sale =='')
-                                                {{$product->price}}₫
+                                                @php echo number_format($product->price,0 ,'.' ,'.').'₫'; @endphp
                                             @else
-                                                {{$product->price_sale}}₫
+                                                @php echo number_format($product->price_sale,0 ,'.' ,'.').'₫'; @endphp
                                             @endif
                                         </div>
                                         <div class="group-button">
@@ -212,13 +213,19 @@
                 let a=window.location.href;
                 let o=urlParams.get('sort');
                 let t="sort="+o;
-                if(a.indexOf('category') > -1){
+                if(a.indexOf('&sort') > -1){
                     t="&sort="+o;
+                }
+                if(a.indexOf('?sort') > -1){
+                    t="?sort="+o;
                 }
                 let s = a.replace(t, '');
                 let b="?sort="+$(this).data('sort');
                 if(a.indexOf('?') > -1){
                     b="&sort="+$(this).data('sort');
+                    if(a.indexOf('?sort') > -1){
+                        b="?sort="+$(this).data('sort');
+                    }
                 }
                 location.replace(s+b);
             });
